@@ -1,29 +1,28 @@
-const express=require('express');
-const tasks=require('./routes/tasks');
-const connectDB=require('./db/connect')
-require('dotenv').config();
-var app=express();
+const express=require("express");
+const app=express();
 const port=3000;
+const tasks=require("./routes/tasks");
+const connectDB=require("./db/connect");
+require("dotenv").config();
 
-//middleware -> to parse the data in json format
+//middleware
 app.use(express.static('./public'));
 app.use(express.json());
 
 //routes
-app.use('/api/v1/tasks',tasks);
-//app.get('/api/v1/tasks')
-//app.post('/api/v1/tasks')
-//app.get('/api/v1/tasks/:id') get a single task
-//app.patch('/api/v1/tasks/:id') update a single task
-//app.delete('/api/v1/tasks/:id') delete a single task
+app.use("/api/v1/tasks",tasks);
 
-const start= async()=>{
+app.get('/hello',(req,res)=>{
+    res.send("Hello World");
+})
+const start=async()=>{
+    
     try {
-        await connectDB(process.env.MONGO_URI);
-        app.listen(port,function(){console.log(`Server is listening on ${port}...`);});
-
+        await connectDB(process.env.CONNECTION_URI);
+        app.listen(port,()=>{console.log(`Example app listening on port ${port}...`);})
     } catch (error) {
+        
         console.log(error);
     }
 }
-start()
+start();
